@@ -1,7 +1,14 @@
 {
   "version": 2,
-  "name": "watzup",
   "builds": [
+    {
+      "src": "*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.css", 
+      "use": "@vercel/static"
+    },
     {
       "src": "*.html",
       "use": "@vercel/static"
@@ -9,8 +16,27 @@
   ],
   "routes": [
     {
+      "src": "/(.*\\.(css|js|html))",
+      "dest": "/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options", 
+          "value": "nosniff"
+        }
+      ]
     }
   ]
 }
