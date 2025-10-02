@@ -1,15 +1,16 @@
 {
-  "name": "watzup",
+  "name": "simplechat",
   "version": "1.0.0",
   "description": "WhatsApp Web Clone with Supabase",
   "scripts": {
     "dev": "python -m http.server 8000",
-    "build": "echo 'No build process needed for static site'"
+    "start": "python -m http.server 8000",
+    "build": "echo 'Static site - no build needed' && exit 0"
   },
+  "keywords": ["chat", "supabase", "realtime"],
+  "author": "Im-gowtham-cd",
+  "license": "MIT",
   "static": {
     "public": "."
-  },
-  "engines": {
-    "node": "18.x"
   }
 }
