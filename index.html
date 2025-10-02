@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleChat - WhatsApp Web Clone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Auth Screen -->
+        <div id="authScreen" class="auth-screen">
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="signin">Sign In</button>
+                <button class="tab-btn" data-tab="signup">Sign Up</button>
+            </div>
+            
+            <div class="auth-container">
+                <!-- Sign In Form -->
+                <div id="signinForm" class="auth-form active">
+                    <div class="auth-header">
+                        <h1>Welcome Back</h1>
+                        <p>Sign in to your SimpleChat account</p>
+                    </div>
+                    <input type="text" id="signinIdentifier" placeholder="Username, Email or Phone Number" class="auth-input">
+                    <input type="password" id="signinPassword" placeholder="Password" class="auth-input">
+                    <button id="signInBtn" class="auth-btn primary">Sign In</button>
+                    <div class="auth-footer">
+                        <p>Don't have an account? <a href="#" id="showSignUp">Sign up</a></p>
+                    </div>
+                </div>
+
+                <!-- Sign Up Form -->
+                <div id="signupForm" class="auth-form">
+                    <div class="auth-header">
+                        <h1>Create Account</h1>
+                        <p>Join SimpleChat today</p>
+                    </div>
+                    <div class="form-row">
+                        <input type="text" id="signupName" placeholder="Full Name" class="auth-input">
+                        <input type="text" id="signupUsername" placeholder="Username" class="auth-input">
+                    </div>
+                    <input type="email" id="signupEmail" placeholder="Email Address" class="auth-input">
+                    <input type="tel" id="signupPhone" placeholder="Phone Number" class="auth-input">
+                    <input type="password" id="signupPassword" placeholder="Password" class="auth-input">
+                    <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" class="auth-input">
+                    
+                    <div class="profile-picture-upload">
+                        <label for="profilePicture">Profile Picture (Optional)</label>
+                        <div class="upload-area" id="uploadArea">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="#8696a0">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                            </svg>
+                            <p>Click to upload profile picture</p>
+                            <input type="file" id="profilePicture" accept="image/*" style="display: none;">
+                        </div>
+                        <div id="imagePreview" class="image-preview hidden"></div>
+                    </div>
+                    
+                    <button id="signUpBtn" class="auth-btn primary">Create Account</button>
+                    <div class="auth-footer">
+                        <p>Already have an account? <a href="#" id="showSignIn">Sign in</a></p>
+                    </div>
+                </div>
+
+                <div id="authMessage" class="auth-message"></div>
+            </div>
+        </div>
+
+        <!-- Main App -->
+        <div id="mainApp" class="main-app hidden">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <div class="user-profile" id="userProfileBtn">
+                        <img id="userAvatar" src="" alt="Profile" class="avatar">
+                        <span id="userName" class="user-name"></span>
+                    </div>
+                    <div class="header-actions">
+                        <button id="newChatBtn" class="icon-btn" title="New Chat">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                            </svg>
+                        </button>
+                        <button id="logoutBtn" class="logout-btn">Logout</button>
+                    </div>
+                </div>
+                
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search or start new chat" class="search-input">
+                </div>
+                
+                <div class="chat-list" id="chatList">
+                    <!-- Chat items will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Active Chat Window -->
+            <div class="chat-window">
+                <div class="chat-header">
+                    <div class="chat-partner-info">
+                        <img id="activeChatAvatar" src="" alt="Chat" class="avatar">
+                        <div class="chat-info">
+                            <span id="activeChatName" class="chat-name">Select a chat</span>
+                            <span id="activeChatStatus" class="chat-status">Click on a chat to start messaging</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="messages-container" id="messagesContainer">
+                    <div class="welcome-message">
+                        <h3>Welcome to SimpleChat</h3>
+                        <p>Select a conversation from the sidebar to start chatting</p>
+                    </div>
+                </div>
+
+                <div class="message-input-container hidden" id="messageInputContainer">
+                    <div class="input-wrapper">
+                        <input type="text" id="messageInput" placeholder="Type a message" class="message-input">
+                        <button id="sendBtn" class="send-btn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Modal -->
+            <div id="profileModal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>My Profile</h3>
+                        <button class="close-btn" id="closeProfileModal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="profile-picture-section">
+                            <div class="profile-avatar-large">
+                                <img id="profileModalAvatar" src="" alt="Profile" class="avatar-large">
+                                <button class="change-photo-btn" id="changePhotoBtn">Change Photo</button>
+                                <input type="file" id="profileModalPicture" accept="image/*" style="display: none;">
+                            </div>
+                        </div>
+                        <form id="profileForm" class="profile-form">
+                            <div class="form-group">
+                                <label for="profileName">Full Name</label>
+                                <input type="text" id="profileName" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="profileUsername">Username</label>
+                                <input type="text" id="profileUsername" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="profileEmail">Email</label>
+                                <input type="email" id="profileEmail" class="form-input" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="profilePhone">Phone Number</label>
+                                <input type="tel" id="profilePhone" class="form-input">
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" id="cancelProfileBtn" class="btn secondary">Cancel</button>
+                                <button type="submit" id="saveProfileBtn" class="btn primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Chat Modal -->
+            <div id="newChatModal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>New Chat</h3>
+                        <button class="close-btn" id="closeNewChatModal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="search-container">
+                            <input type="text" id="newChatSearch" placeholder="Search users..." class="search-input">
+                        </div>
+                        <div class="user-list" id="userList">
+                            <!-- Users will be listed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="database.js"></script>
+    <script src="realtime.js"></script>
+    <script src="ui.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
