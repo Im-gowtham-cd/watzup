@@ -179,12 +179,8 @@ class AuthManager {
                 avatarUrl = await this.uploadProfilePicture(authData.user.id);
             }
 
-            // Create profile in database using service role key (bypass RLS)
-            // We'll use a direct fetch to avoid RLS restrictions
+            // Create profile in database
             await this.createProfileDirectly(authData.user.id, email, username, name, phone, avatarUrl);
-
-            // Call debug after profile creation
-            await this.debugCheckProfiles();
 
             this.showAuthMessage('Account created successfully! Please check your email for verification. You can sign in after verification.', 'success');
             
@@ -198,10 +194,9 @@ class AuthManager {
             throw error;
         }
     }
-    
+
     async createProfileDirectly(userId, email, username, name, phone, avatarUrl = null) {
         try {
-            // Use the supabase client with service role key for profile creation
             const { data, error } = await window.supabaseClient
                 .from('profiles')
                 .insert([
@@ -221,41 +216,13 @@ class AuthManager {
 
             if (error) {
                 console.error('Profile creation error:', error);
-                // If there's a constraint violation (duplicate username/email), try without unique fields
-                if (error.code === '23505') {
-                    console.log('Retrying profile creation without unique constraints...');
-                    const { data: retryData, error: retryError } = await window.supabaseClient
-                        .from('profiles')
-                        .insert([
-                            {
-                                id: userId,
-                                email: `${userId}@temp.com`, // Temporary email
-                                username: `user_${userId.substring(0, 8)}`, // Temporary username
-                                name: name,
-                                phone: phone,
-                                avatar_url: avatarUrl,
-                                created_at: new Date().toISOString(),
-                                updated_at: new Date().toISOString()
-                            }
-                        ])
-                        .select()
-                        .single();
-
-                    if (retryError) {
-                        console.error('Retry profile creation also failed:', retryError);
-                        throw retryError;
-                    }
-                    return retryData;
-                }
-                throw error;
+                return null;
             }
 
             console.log('Profile created successfully:', data);
             return data;
         } catch (error) {
             console.error('Failed to create profile:', error);
-            // Don't throw the error to prevent blocking the signup process
-            // The user can update their profile later
             return null;
         }
     }
@@ -443,20 +410,6 @@ class AuthManager {
 
     getCurrentUser() {
         return this.currentUser;
-    }
-
-    // Add this temporary debug function to check profiles
-    async debugCheckProfiles() {
-        try {
-            const { data: profiles, error } = await window.supabaseClient
-                .from('profiles')
-                .select('*');
-            
-            console.log('All profiles in database:', profiles);
-            console.log('Profiles error:', error);
-        } catch (error) {
-            console.error('Debug error:', error);
-        }
     }
 }
 

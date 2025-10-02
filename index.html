@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SimpleChat - WhatsApp Web Clone</title>
+    <title>SimpleChat - Mobile Messenger</title>
     <link rel="stylesheet" href="./styles.css">
-</head>
+    </head>
 <body>
     <div class="app-container">
-        <!-- Auth Screen -->
+        
         <div id="authScreen" class="auth-screen">
             <div class="auth-tabs">
                 <button class="tab-btn active" data-tab="signin">Sign In</button>
@@ -16,7 +16,6 @@
             </div>
             
             <div class="auth-container">
-                <!-- Sign In Form -->
                 <div id="signinForm" class="auth-form active">
                     <div class="auth-header">
                         <h1>Welcome Back</h1>
@@ -30,7 +29,6 @@
                     </div>
                 </div>
 
-                <!-- Sign Up Form -->
                 <div id="signupForm" class="auth-form">
                     <div class="auth-header">
                         <h1>Create Account</h1>
@@ -67,37 +65,65 @@
             </div>
         </div>
 
-        <!-- Main App -->
+        
         <div id="mainApp" class="main-app hidden">
-            <!-- Sidebar -->
             <div class="sidebar">
                 <div class="sidebar-header">
                     <div class="user-profile" id="userProfileBtn">
                         <img id="userAvatar" src="" alt="Profile" class="avatar">
-                        <span id="userName" class="user-name"></span>
+                        <span id="userName" class="user-name">Hello, Johan</span>
                     </div>
                     <div class="header-actions">
                         <button id="newChatBtn" class="icon-btn" title="New Chat">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                            </svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                         </button>
-                        <button id="logoutBtn" class="logout-btn">Logout</button>
+                        <button id="logoutBtn" class="icon-btn logout-btn" title="Logout">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 17v-3H9v-2h7V9l3 3-3 3zm-6-4H7V8h7v2h-4v3zM18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                        </button>
                     </div>
                 </div>
                 
                 <div class="search-container">
                     <input type="text" id="searchInput" placeholder="Search or start new chat" class="search-input">
                 </div>
+
+                <div class="chat-type-selector">
+                    <button class="chat-type-btn active" data-type="all">All Chats</button>
+                    <button class="chat-type-btn" data-type="groups">Groups</button>
+                    <button class="chat-type-btn" data-type="contacts">Contacts</button>
+                </div>
                 
                 <div class="chat-list" id="chatList">
-                    <!-- Chat items will be dynamically added here -->
-                </div>
+                    <div class="chat-item" data-chat-id="chat_1">
+                        <img src="" alt="Alice" class="avatar">
+                        <div class="chat-info">
+                            <span class="chat-name">Alice Smith</span>
+                            <span class="chat-last-message">Sounds good! Catch up tomorrow. 👋</span>
+                        </div>
+                        <span class="chat-time">9:41 AM</span>
+                        <span class="unread-count">2</span>
+                    </div>
+                    <div class="chat-item" data-chat-id="chat_2">
+                        <img src="" alt="Work Group" class="avatar">
+                        <div class="chat-info">
+                            <span class="chat-name">Dev Team Project (Group)</span>
+                            <span class="chat-last-message">Bob: Frontend deployed successfully.</span>
+                        </div>
+                        <span class="chat-time">Yesterday</span>
+                    </div>
+                    </div>
+
+                <button class="start-chat-btn" id="floatingNewChatBtn" title="Start New Chat">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+                </button>
             </div>
 
-            <!-- Active Chat Window -->
-            <div class="chat-window">
+            <div class="chat-window" id="activeChatWindow">
                 <div class="chat-header">
+                    <button id="backToSidebarBtn" class="icon-btn" title="Back">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>
+                    </button>
+
                     <div class="chat-partner-info">
                         <img id="activeChatAvatar" src="" alt="Chat" class="avatar">
                         <div class="chat-info">
@@ -105,6 +131,7 @@
                             <span id="activeChatStatus" class="chat-status">Click on a chat to start messaging</span>
                         </div>
                     </div>
+                    <button class="icon-btn" title="Call"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.34-.2-3.37-.57-.35-.12-.74-.03-1.01.24l-2.27 2.27c-3.66-2.1-6.83-5.27-8.93-8.93l2.27-2.27c.27-.27.36-.66.24-1.01-.37-1.03-.57-2.14-.57-3.37 0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1C2 13.9 8.1 20 15.38 20c.55 0 1-.45 1-1v-3.01c0-.55-.45-1-1-1z"/></svg></button>
                 </div>
 
                 <div class="messages-container" id="messagesContainer">
@@ -112,62 +139,29 @@
                         <h3>Welcome to SimpleChat</h3>
                         <p>Select a conversation from the sidebar to start chatting</p>
                     </div>
+                    </div>
+
+                <div class="reply-preview hidden" id="replyPreview">
+                    <div class="reply-preview-content">
+                        <div class="reply-info">
+                            <span class="reply-sender" id="replySender"></span>
+                            <span class="reply-label">Replying to</span>
+                        </div>
+                        <div class="reply-message" id="replyMessage"></div>
+                        <button class="cancel-reply" id="cancelReply">✕</button>
+                    </div>
                 </div>
 
                 <div class="message-input-container hidden" id="messageInputContainer">
                     <div class="input-wrapper">
                         <input type="text" id="messageInput" placeholder="Type a message" class="message-input">
-                        <button id="sendBtn" class="send-btn">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                            </svg>
+                        <button id="sendBtn" class="send-btn" disabled>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Profile Modal -->
-            <div id="profileModal" class="modal hidden">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>My Profile</h3>
-                        <button class="close-btn" id="closeProfileModal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="profile-picture-section">
-                            <div class="profile-avatar-large">
-                                <img id="profileModalAvatar" src="" alt="Profile" class="avatar-large">
-                                <button class="change-photo-btn" id="changePhotoBtn">Change Photo</button>
-                                <input type="file" id="profileModalPicture" accept="image/*" style="display: none;">
-                            </div>
-                        </div>
-                        <form id="profileForm" class="profile-form">
-                            <div class="form-group">
-                                <label for="profileName">Full Name</label>
-                                <input type="text" id="profileName" class="form-input">
-                            </div>
-                            <div class="form-group">
-                                <label for="profileUsername">Username</label>
-                                <input type="text" id="profileUsername" class="form-input">
-                            </div>
-                            <div class="form-group">
-                                <label for="profileEmail">Email</label>
-                                <input type="email" id="profileEmail" class="form-input" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="profilePhone">Phone Number</label>
-                                <input type="tel" id="profilePhone" class="form-input">
-                            </div>
-                            <div class="form-actions">
-                                <button type="button" id="cancelProfileBtn" class="btn secondary">Cancel</button>
-                                <button type="submit" id="saveProfileBtn" class="btn primary">Save Changes</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- New Chat Modal -->
             <div id="newChatModal" class="modal hidden">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -175,19 +169,70 @@
                         <button class="close-btn" id="closeNewChatModal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <div class="search-container">
-                            <input type="text" id="newChatSearch" placeholder="Search users..." class="search-input">
+                        <div class="chat-type-selector">
+                            <button class="chat-type-btn active" data-type="private">Private Chat</button>
+                            <button class="chat-type-btn" data-type="group">Group Chat</button>
                         </div>
-                        <div class="user-list" id="userList">
-                            <!-- Users will be listed here -->
+                        
+                        <div id="privateChatSection" class="chat-section active">
+                            <div class="search-container">
+                                <input type="text" id="newChatSearch" placeholder="Search users..." class="search-input">
+                            </div>
+                            <div class="user-list" id="userList"></div>
+                        </div>
+
+                        <div id="groupChatSection" class="chat-section hidden">
+                            <div class="form-group">
+                                <label for="groupName">Group Name</label>
+                                <input type="text" id="groupName" placeholder="Enter group name" class="auth-input">
+                            </div>
+                            <div class="search-container">
+                                <input type="text" id="groupMemberSearch" placeholder="Search users to add..." class="search-input">
+                            </div>
+                            <div class="selected-members" id="selectedMembers"></div>
+                            <div class="user-list" id="groupUserList"></div>
+                            <button id="createGroupBtn" class="auth-btn primary" disabled>Create Group</button>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div id="forwardModal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Forward Message</h3>
+                        <button class="close-btn" id="closeForwardModal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="search-container">
+                            <input type="text" id="forwardSearch" placeholder="Search chats..." class="search-input">
+                        </div>
+                        <div class="chat-selection-list" id="forwardChatList"></div>
+                        <div class="modal-actions">
+                            <button id="cancelForward" class="btn secondary">Cancel</button>
+                            <button id="confirmForward" class="btn primary" disabled>Forward</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="messageContextMenu" class="context-menu hidden">
+                <div class="context-menu-item" data-action="reply">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>
+                    Reply
+                </div>
+                <div class="context-menu-item" data-action="forward">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8l-8 8-8-8 1.5-1.5L10 13l6.5-6.5L18 8z"/></svg>
+                    Forward
+                </div>
+                <div class="context-menu-item" data-action="delete">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                    Delete
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Supabase CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./config.js"></script>
     <script src="./auth.js"></script>

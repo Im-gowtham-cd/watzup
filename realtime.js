@@ -5,7 +5,7 @@ class RealtimeManager {
         this.currentChatId = null;
     }
 
-    subscribeToChat(chatId, onNewMessage) {
+    subscribeToChat(chatId, onNewMessage, onMessageUpdate, onMessageDelete) {
         // Unsubscribe from previous channel
         if (this.activeChannel) {
             this.supabase.removeChannel(this.activeChannel);
@@ -13,7 +13,7 @@ class RealtimeManager {
 
         this.currentChatId = chatId;
 
-        // Subscribe to new messages for this chat
+        // Subscribe to messages for this chat
         this.activeChannel = this.supabase
             .channel(`chat:${chatId}`)
             .on(
@@ -27,6 +27,23 @@ class RealtimeManager {
                 (payload) => {
                     console.log('New message received:', payload);
                     onNewMessage(payload.new);
+                }
+            )
+            .on(
+                'postgres_changes',
+                {
+                    event: 'UPDATE',
+                    schema: 'public',
+                    table: 'messages',
+                    filter: `chat_id=eq.${chatId}`
+                },
+                (payload) => {
+                    console.log('Message updated:', payload);
+                    if (payload.new.is_deleted) {
+                        onMessageDelete(payload.new);
+                    } else {
+                        onMessageUpdate(payload.new);
+                    }
                 }
             )
             .subscribe((status) => {
@@ -53,7 +70,7 @@ class RealtimeManager {
                 {
                     event: '*',
                     schema: 'public',
-                    table: 'chat_participants',
+                    table: 'chat_members',
                     filter: `user_id=eq.${userId}`
                 },
                 (payload) => {

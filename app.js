@@ -30,7 +30,7 @@ class SimpleChatApp {
             window.authManager.currentUser.id,
             (payload) => {
                 console.log('Profile update received:', payload);
-                window.authManager.loadUserProfile(); // Reload profile
+                window.authManager.loadUserProfile();
             }
         );
         
