@@ -1,0 +1,15 @@
+{
+  "name": "watzup",
+  "version": "1.0.0",
+  "description": "WhatsApp Web Clone with Supabase",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "build": "echo 'No build process needed for static site'"
+  },
+  "static": {
+    "public": "."
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
